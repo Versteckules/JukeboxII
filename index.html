@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Projekt Jukebox – Interaktives Geocaching-Rätsel. Erkenne 25 Songs, gib die Titel ein und entschlüssle die finalen Koordinaten." />
+
+  <title>Projekt Jukebox</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Roboto:wght@400;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/jukebox.css?v=2" />
+  <link rel="stylesheet" href="css/responsive.css?v=2" />
+</head>
+<body>
+
+  <!-- ========================================================
+       HEADER – Logo, Sprach-Toggle, Fortschritt
+  ======================================================== -->
+  <header id="site-header">
+    <div id="header-logo">
+      <h1 data-i18n="title">PROJEKT JUKEBOX</h1>
+    </div>
+
+    <div id="header-controls">
+      <!-- Info-Button (Spielanleitung) -->
+      <button id="info-btn" aria-label="Spielanleitung" title="Anleitung">ⓘ</button>
+
+      <!-- Sprach-Toggle -->
+      <button id="lang-toggle" aria-label="Sprache wechseln / Switch language / Změnit jazyk">
+        🇩🇪 DE | EN 🇬🇧 | CZ 🇨🇿
+      </button>
+
+      <!-- Fortschrittsanzeige -->
+      <div id="progress-display" aria-label="Fortschrittsanzeige">
+        <span id="solved-count">0</span>
+        <span data-i18n="progress-separator"> / </span>
+        <span id="total-count">25</span>
+        <span data-i18n="progress-label"> gelöst</span>
+      </div>
+
+      <!-- Hinweis Lösungsschwelle -->
+      <div id="solve-hint" aria-label="Lösungshinweis">
+        <span data-i18n="solve-hint">21 zum Lösen</span>
+      </div>
+
+      <!-- Teilen-Button -->
+      <button id="share-btn" data-i18n="share-btn" aria-label="Spiel teilen">
+        🔗 Teilen
+      </button>
+
+      <!-- Koordinaten-Button (dauerhaft nach Freischaltung) -->
+      <button id="show-coords-btn"
+              data-i18n="show-coords-btn"
+              aria-label="Koordinaten anzeigen"
+              hidden>
+        📍 Koordinaten
+      </button>
+    </div>
+  </header>
+
+  <!-- ========================================================
+       MAIN – Jukebox-Gehäuse mit U-förmigem LED-Equalizer
+  ======================================================== -->
+  <main id="main-content">
+    <!-- Jukebox-Gehäuse -->
+    <div id="jukebox-cabinet" aria-label="Jukebox-Gehäuse">
+
+      <!-- U-förmige LED-Leiste (Equalizer schmiegt sich direkt ans Gehäuse) -->
+      <div id="led-bar" aria-hidden="true">
+        <!-- Linker Equalizer (10 LEDs von unten nach oben) -->
+        <div class="led-strip led-strip-left" aria-label="Equalizer links">
+          <div class="led" id="led-l-1"></div>
+          <div class="led" id="led-l-2"></div>
+          <div class="led" id="led-l-3"></div>
+          <div class="led" id="led-l-4"></div>
+          <div class="led" id="led-l-5"></div>
+          <div class="led" id="led-l-6"></div>
+          <div class="led" id="led-l-7"></div>
+          <div class="led" id="led-l-8"></div>
+          <div class="led" id="led-l-9"></div>
+          <div class="led" id="led-l-10"></div>
+        </div>
+
+        <!-- Untere Leiste (12 LEDs) -->
+        <div class="led-strip led-strip-bottom" aria-label="LED Leiste unten">
+          <div class="led" id="led-b-1"></div>
+          <div class="led" id="led-b-2"></div>
+          <div class="led" id="led-b-3"></div>
+          <div class="led" id="led-b-4"></div>
+          <div class="led" id="led-b-5"></div>
+          <div class="led" id="led-b-6"></div>
+          <div class="led" id="led-b-7"></div>
+          <div class="led" id="led-b-8"></div>
+          <div class="led" id="led-b-9"></div>
+          <div class="led" id="led-b-10"></div>
+          <div class="led" id="led-b-11"></div>
+          <div class="led" id="led-b-12"></div>
+        </div>
+
+        <!-- Rechter Equalizer (10 LEDs von unten nach oben) -->
+        <div class="led-strip led-strip-right" aria-label="Equalizer rechts">
+          <div class="led" id="led-r-1"></div>
+          <div class="led" id="led-r-2"></div>
+          <div class="led" id="led-r-3"></div>
+          <div class="led" id="led-r-4"></div>
+          <div class="led" id="led-r-5"></div>
+          <div class="led" id="led-r-6"></div>
+          <div class="led" id="led-r-7"></div>
+          <div class="led" id="led-r-8"></div>
+          <div class="led" id="led-r-9"></div>
+          <div class="led" id="led-r-10"></div>
+        </div>
+      </div>
+
+      <div id="song-grid" aria-label="Song-Auswahl" role="list">
+        <!--
+          *** PLATZHALTER: 25 Song-Buttons werden hier von ui.js dynamisch eingefügt ***
+          Schritt 4 (UI-Logik) befüllt diesen Bereich mit folgendem Muster pro Eintrag:
+
+          <div class="song-entry" role="listitem" data-song-id="N">
+            <button class="song-button" id="song-btn-N" data-song-id="N" aria-label="Song N abspielen">
+              N
+            </button>
+            <div class="song-label" id="song-label-N">
+              <span class="song-label-text"><!-- blur bis gelöst --></span>
+            </div>
+          </div>
+        -->
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ========================================================
+       MODAL – Song-Eingabe (initial versteckt)
+  ======================================================== -->
+  <div id="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title" hidden>
+    <div id="modal-box">
+
+      <h2 id="modal-title" data-i18n="modal-title">Song #<span id="modal-song-number"></span></h2>
+
+      <div id="modal-now-playing" aria-label="Musik läuft" hidden>
+        <span class="note-icon">♪</span>
+        <span class="mini-eq-bar"></span>
+        <span class="mini-eq-bar"></span>
+        <span class="mini-eq-bar"></span>
+        <span class="mini-eq-bar"></span>
+        <span class="note-icon">♫</span>
+      </div>
+
+      <div id="modal-player">
+        <div id="modal-progress-bar" aria-label="Musikfortschritt">
+          <div id="modal-progress-fill"></div>
+        </div>
+        <div id="modal-transport">
+          <button id="modal-restart-btn" aria-label="Von vorne starten" title="Restart">⏮</button>
+          <button id="modal-playpause-btn" aria-label="Play/Pause" title="Play/Pause">⏸</button>
+        </div>
+      </div>
+
+      <!-- Vorschau-Schild (blur solange ungelöst) -->
+      <div id="modal-label-preview" aria-label="Song-Schild">
+        <p id="modal-preview-title" class="blurred"></p>
+        <p id="modal-preview-artist" class="blurred"></p>
+      </div>
+
+      <!-- Eingabefeld -->
+      <label for="modal-input" id="modal-input-label" data-i18n="modal-input-label">
+        🎵 Gib Songtitel oder Künstler ein:
+      </label>
+      <input
+        type="text"
+        id="modal-input"
+        name="modal-input"
+        autocomplete="off"
+        autocorrect="off"
+        spellcheck="false"
+        data-i18n-placeholder="modal-input-placeholder"
+        placeholder="z.B. Queen, Bohemian Rhapsody..."
+      />
+      <p class="modal-input-hint" data-i18n="modal-input-hint">Tipp: Kleine Tippfehler werden toleriert (Fuzzy-Matching aktiv)!</p>
+
+      <!-- Aktionsbuttons -->
+      <div id="modal-actions">
+        <button id="modal-submit" data-i18n="modal-submit">Bestätigen</button>
+        <button id="modal-close" data-i18n="modal-close">Schließen</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========================================================
+       KOORDINATEN-OVERLAY – erscheint ab 21 gelösten Songs (initial versteckt)
+  ======================================================== -->
+  <div id="coords-overlay" role="dialog" aria-modal="true" aria-labelledby="coords-title" hidden>
+    <div id="coords-box">
+
+      <h2 id="coords-title" data-i18n="coords-title">🎉 Zielkoordinaten</h2>
+      <p id="coords-subtitle" data-i18n="coords-subtitle">Du hast genug Songs erkannt!</p>
+
+      <div id="coords-display" aria-label="Koordinaten">
+        <!-- Koordinaten werden zur Laufzeit per solver.js dekodiert und eingefügt -->
+      </div>
+
+      <button id="coords-copy" data-i18n="coords-copy">Koordinaten kopieren</button>
+      <button id="coords-share" data-i18n="coords-share">📤 Teilen</button>
+      <button id="coords-close" data-i18n="coords-close">Schließen</button>
+
+    </div>
+  </div>
+
+  <!-- ========================================================
+       TEILEN-MODAL – Spiel mit Freunden teilen (QR-Code & Link)
+  ======================================================== -->
+  <div id="share-overlay" role="dialog" aria-modal="true"
+       aria-labelledby="share-title" hidden>
+    <div id="share-box">
+      <h2 id="share-title" data-i18n="share-title">🎵 Gemeinsam spielen!</h2>
+      <p id="share-text" data-i18n="share-text">Schicke den Link an deine Mitspieler:</p>
+      <div id="share-coords-box" class="share-coords-box" hidden>
+        <span id="share-coords-label" data-i18n="share-coords-label">📍 Zielkoordinaten:</span>
+        <div id="share-coords-display"></div>
+      </div>
+      <div id="share-url-display"></div>
+      <div id="share-qr" aria-label="QR-Code"></div>
+      <div id="share-actions">
+        <button id="share-copy-btn" data-i18n="share-copy">📋 Link kopieren</button>
+        <button id="share-native-btn" data-i18n="share-native">📤 Teilen...</button>
+        <button id="share-close-btn" data-i18n="share-close">✕ Schließen</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       ANLEITUNG-OVERLAY – Spielanleitung (beim Starten angezeigt)
+  ======================================================== -->
+  <div id="info-overlay" role="dialog" aria-modal="true"
+       aria-labelledby="info-title">
+    <div id="info-box">
+      <h2 id="info-title" data-i18n="info-title">🎵 Spielanleitung</h2>
+      <div id="info-lang-switch" aria-label="Sprache auswählen / Choose language">
+        <button type="button" class="info-lang-btn" data-lang="de" aria-label="Deutsch">🇩🇪 DE</button>
+        <button type="button" class="info-lang-btn" data-lang="en" aria-label="English">🇬🇧 EN</button>
+        <button type="button" class="info-lang-btn" data-lang="cs" aria-label="Čeština">🇨🇿 CZ</button>
+      </div>
+      <ol id="info-steps">
+        <li data-i18n="info-step-1"></li>
+        <li data-i18n="info-step-2"></li>
+        <li data-i18n="info-step-3"></li>
+        <li data-i18n="info-step-4"></li>
+        <li data-i18n="info-step-5"></li>
+        <li data-i18n="info-step-6"></li>
+      </ol>
+      <div id="info-threshold">
+        <span data-i18n="info-threshold-label">Zum Lösen benötigt:</span>
+        <strong id="info-threshold-value">21 / 25</strong>
+      </div>
+
+      <!-- Joker-Code Eingabebereich -->
+      <div id="info-joker-section" class="info-joker-section">
+        <label for="info-joker-input" id="info-joker-label" data-i18n="info-joker-label">💡 Joker-Code:</label>
+        <div class="info-joker-controls">
+          <input
+            type="text"
+            id="info-joker-input"
+            maxlength="4"
+            data-i18n-placeholder="info-joker-placeholder"
+            placeholder="Code (4 Ziffern)"
+            autocomplete="off"
+            autocorrect="off"
+            spellcheck="false"
+            inputmode="numeric"
+          />
+          <button type="button" id="info-joker-submit-btn" data-i18n="info-joker-submit">Einlösen</button>
+        </div>
+        <p class="info-joker-hint" data-i18n="info-joker-hint">
+          💡 Tipp: Die Spielanleitung kann jederzeit über das ⓘ-Symbol im Header geöffnet und der Code später im Spiel eingelöst werden.
+        </p>
+      </div>
+
+      <button id="info-close-btn" data-i18n="info-close">Los geht es! 🎶</button>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       TOAST – Feedback-Meldung (initial versteckt)
+  ======================================================== -->
+  <div id="toast" role="status" aria-live="polite" hidden>
+    <span id="toast-message"></span>
+  </div>
+
+  <!-- ========================================================
+       SCRIPTS – Ladereihenfolge gemäß architecture.md:
+       songs.js → i18n.js → audio.js → solver.js → state.js → ui.js
+  ======================================================== -->
+  <script src="js/songs.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/solver.js"></script>
+  <script src="js/state.js"></script>
+  <script src="js/ui.js"></script>
+
+</body>
+</html>
