@@ -1,0 +1,727 @@
+/* ==========================================================================
+   responsive.css
+   Responsive-Regeln & Mobile-Breakpoints für das Jukebox-Layout
+   Reihenfolge: jukebox.css → responsive.css (laut architecture.md)
+   ========================================================================== */
+
+
+/* --------------------------------------------------------------------------
+   0. Touch-Action global – verhindert Doppeltipp-Zoom auf mobilen Geräten
+      (WCAG 2.5.5: Touch Target – mind. 48 × 48 px bei Mobile)
+   -------------------------------------------------------------------------- */
+.song-button,
+#modal-submit,
+#modal-close,
+#coords-copy,
+#coords-share,
+#coords-close,
+#lang-toggle,
+#share-btn,
+#reset-btn,
+#share-copy-btn,
+#share-native-btn,
+#share-close-btn,
+#info-btn,
+#info-close-btn,
+.info-lang-btn {
+  touch-action: manipulation;
+}
+
+
+/* ==========================================================================
+   BREAKPOINT 1 – Tablet / Smartphone  (max-width: 768px)
+   ========================================================================== */
+@media (max-width: 768px) {
+
+  /* --- Body ---------------------------------------------------------------- */
+  body {
+    padding: 0 8px 32px;
+  }
+
+  /* --- Header (#site-header) ----------------------------------------------- */
+  #site-header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 12px 0 10px;
+  }
+
+  #header-logo {
+    flex-shrink: 0;
+  }
+
+  #header-logo h1 {
+    font-size: clamp(1rem, 4vw, 1.8rem);
+    letter-spacing: 1px;
+    white-space: nowrap;
+  }
+
+  #header-controls {
+    width: auto;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 6px;
+    white-space: nowrap;
+  }
+
+  #info-btn {
+    width: 28px;
+    height: 28px;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+
+  #progress-display {
+    font-size: 12px;
+    padding: 4px 8px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  #solve-hint {
+    font-size: 12px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  #lang-toggle {
+    font-size: 12px;
+    padding: 5px 8px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  #share-btn {
+    font-size: 12px;
+    padding: 5px 8px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  #reset-btn {
+    font-size: 12px;
+    padding: 5px 8px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  #show-coords-btn {
+    font-size: 12px;
+    padding: 5px 8px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* --- Jukebox-Gehäuse (#jukebox-cabinet) ---------------------------------- */
+  #jukebox-cabinet {
+    width: 100%;
+    max-width: 100%;       /* volle Breite */
+    margin: 16px auto 0;
+    padding: 24px 22px;
+    border-radius: 32px 32px 12px 12px;
+
+    /* Etwas schlankere Schatten-Stapel für Performance */
+    box-shadow:
+      0 0 0 4px #a0a0a0,
+      0 0 0 6px #606060,
+      0 0 0 8px #d0d0d0,
+      0 16px 40px rgba(0,0,0,0.9),
+      inset 0 0 40px rgba(212,160,23,0.05),
+      inset 0 2px 0 rgba(255,255,255,0.12);
+  }
+
+  /* Chrom-Leiste oben – etwas niedriger */
+  #jukebox-cabinet::before {
+    height: 14px;
+    margin-bottom: 20px;
+  }
+
+  /* Gold-Linie unten */
+  #jukebox-cabinet::after {
+    margin-top: 22px;
+  }
+
+  /* --- U-förmige LED-Leiste (#led-bar schmiegt sich ans Gehäuse an) ---------- */
+  .led-strip-left,
+  .led-strip-right {
+    width: 12px;
+    top: 48px;
+    bottom: 18px;
+    padding: 4px 2px;
+    gap: 2px;
+  }
+
+  .led-strip-left {
+    left: 5px;
+  }
+
+  .led-strip-right {
+    right: 5px;
+  }
+
+  .led-strip-bottom {
+    height: 12px;
+    left: 5px;
+    right: 5px;
+    bottom: 5px;
+    padding: 2px 4px;
+    gap: 2px;
+  }
+
+  /* --- Song-Grid (#song-grid) --------------------------------------------- */
+  #song-grid {
+    grid-template-columns: 1fr 1fr;   /* weiterhin 2 Spalten */
+    gap: 10px 14px;                   /* saubere Abstände */
+  }
+
+  /* --- Song-Entries (.song-entry) ------------------------------------------ */
+  .song-entry {
+    grid-template-columns: 48px 1fr;
+    gap: 10px;
+    padding: 6px 8px;
+  }
+
+  /* --- Song-Buttons (.song-button) ---------------------------------------- */
+  .song-button {
+    min-width: 48px;
+    min-height: 48px;
+    width: 48px;
+    height: 48px;
+    font-size: 12px;
+    border-width: 2px;
+  }
+
+  /* --- Song-Labels (.song-label) ------------------------------------------ */
+  .song-label {
+    padding: 4px 8px;
+    min-height: 44px;
+    font-size: 0.7rem;
+    line-height: 1.4;
+  }
+
+  .song-label-text {
+    font-size: 0.7rem;
+    line-height: 1.4;
+  }
+
+  .song-label-title {
+    font-size: 0.7rem;
+    line-height: 1.4;
+    margin-bottom: 2px;
+  }
+
+  .song-label-artist {
+    font-size: 0.7rem;
+    line-height: 1.4;
+  }
+
+  /* --- Modal (#modal-overlay .modal / #modal-box) -------------------------- */
+  #modal-overlay {
+    padding: 10px;
+  }
+
+  #modal-box {
+    width: 95vw;
+    max-width: 95vw;
+    padding: 24px 18px;
+    border-radius: 12px;
+  }
+
+  #modal-title {
+    font-size: clamp(0.8rem, 2.5vw, 1.1rem);
+    margin-bottom: 14px;
+  }
+
+  #modal-box p {
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.95rem;
+    color: #ddd;
+  }
+
+  #modal-label-preview {
+    padding: 10px 12px;
+    margin-bottom: 14px;
+  }
+
+  #modal-preview-title,
+  #modal-preview-artist {
+    font-size: 0.9rem;
+    color: #fff;
+  }
+
+  #modal-input {
+    font-size: 1rem;
+    padding: 12px 16px;
+  }
+
+  .modal-input-hint {
+    font-size: 0.95rem;
+  }
+
+  #modal-submit,
+  #modal-close {
+    font-size: 12px;
+    padding: 10px 16px;
+    min-height: 44px;
+  }
+
+  /* --- Koordinaten-Box (#coords-box) --------------------------------------- */
+  #coords-box {
+    padding: 28px 20px;
+    max-width: 95vw;
+  }
+
+  #coords-title {
+    font-size: clamp(0.8rem, 3vw, 1rem);
+  }
+
+  #coords-subtitle {
+    font-size: 12px;
+  }
+
+  #coords-display {
+    font-size: clamp(0.8rem, 3.5vw, 1rem);
+    padding: 14px;
+    letter-spacing: 2px;
+  }
+
+  #coords-copy,
+  #coords-share,
+  #coords-close {
+    font-size: 12px;
+    min-height: 44px;
+  }
+
+  /* --- Teilen-Box (#share-box) --------------------------------------------- */
+  #share-title {
+    font-size: clamp(0.8rem, 3vw, 1rem);
+  }
+
+  #share-box p {
+    font-size: 12px;
+  }
+
+  #share-coords-label {
+    font-size: 12px;
+  }
+
+  #share-coords-display {
+    font-size: clamp(0.8rem, 3.5vw, 1rem);
+  }
+
+  #share-url-display {
+    font-size: 12px;
+  }
+
+  #share-copy-btn,
+  #share-native-btn,
+  #share-close-btn {
+    font-size: 12px;
+    min-height: 44px;
+  }
+
+  /* --- Toast (#toast) ------------------------------------------------------- */
+  #toast {
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.95rem;
+    padding: 12px 20px;
+    white-space: normal;
+    max-width: 90vw;
+    text-align: center;
+  }
+}
+
+
+/* ==========================================================================
+   BREAKPOINT 2 – Kleines Smartphone  (max-width: 480px)
+   ========================================================================== */
+@media (max-width: 480px) {
+
+  /* --- Body ---------------------------------------------------------------- */
+  body {
+    padding: 0 6px 24px;
+  }
+
+  /* --- Header -------------------------------------------------------------- */
+  #site-header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding: 8px 0;
+    gap: 8px;
+  }
+
+  #header-logo {
+    width: 100%;
+    text-align: center;
+  }
+
+  #header-logo h1 {
+    font-size: clamp(1rem, 4vw, 1.8rem);
+    letter-spacing: 1px;
+    white-space: nowrap;
+  }
+
+  #header-controls {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+  }
+
+  #info-btn {
+    width: 28px;
+    height: 28px;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+
+  #progress-display {
+    font-size: 12px;
+    padding: 4px 8px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  #solve-hint {
+    font-size: 12px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  #lang-toggle {
+    font-size: 12px;
+    padding: 6px 8px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  #share-btn {
+    font-size: 12px;
+    padding: 6px 8px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  #reset-btn {
+    font-size: 12px;
+    padding: 6px 8px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  #show-coords-btn {
+    font-size: 12px;
+    padding: 6px 8px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* --- Jukebox-Gehäuse ----------------------------------------------------- */
+  #jukebox-cabinet {
+    padding: 16px 12px 20px;
+    border-radius: 20px 20px 8px 8px;
+    box-shadow:
+      0 0 0 3px #a0a0a0,
+      0 0 0 5px #606060,
+      0 10px 30px rgba(0,0,0,0.9),
+      inset 0 2px 0 rgba(255,255,255,0.1);
+  }
+
+  #jukebox-cabinet::before {
+    height: 10px;
+    margin-bottom: 14px;
+  }
+
+  #jukebox-cabinet::after {
+    margin-top: 16px;
+    width: 90%;
+  }
+
+  /* --- Song-Grid: 1 Spalte ------------------------------------------------- */
+  #song-grid {
+    grid-template-columns: 1fr;       /* 1 Spalte; Button + Label nebeneinander */
+    gap: 8px 0;
+  }
+
+  /* --- Song-Entries -------------------------------------------------------- */
+  .song-entry {
+    grid-template-columns: 48px 1fr;  /* Button + Label bleiben nebeneinander */
+    gap: 10px;
+    padding: 6px 8px;
+  }
+
+  /* --- Song-Buttons: Touch-freundlich (WCAG Touch-Standard: min. 48 × 48 px) --- */
+  .song-button {
+    min-width: 48px;
+    min-height: 48px;
+    width: 48px;
+    height: 48px;
+    font-size: 12px;
+    border-width: 2px;
+    border-radius: 50%;
+  }
+
+  /* Alle Song-Buttons rund */
+  .song-entry:nth-child(even) .song-button {
+    border-radius: 50%;
+  }
+
+  /* --- Song-Labels --------------------------------------------------------- */
+  .song-label {
+    padding: 4px 8px;
+    min-height: 48px;               /* Ausreichende Mindesthöhe für Button */
+    font-size: 12px;
+    line-height: 1.4;
+  }
+
+  .song-label-text {
+    font-size: 12px;
+    line-height: 1.4;
+  }
+
+  .song-label-title {
+    font-size: 12px;
+    line-height: 1.4;
+    margin-bottom: 2px;
+  }
+
+  .song-label-artist {
+    font-size: 12px;
+    line-height: 1.4;
+  }
+
+  /* --- LED-Leiste: schmiegt sich an kleines Gehäuse an --------------------- */
+  #jukebox-cabinet {
+    padding: 16px 14px 18px 14px;
+  }
+
+  .led-strip-left,
+  .led-strip-right {
+    width: 8px;
+    top: 36px;
+    bottom: 12px;
+    padding: 2px 1px;
+    gap: 1px;
+    border-radius: 4px;
+  }
+
+  .led-strip-left {
+    left: 3px;
+  }
+
+  .led-strip-right {
+    right: 3px;
+  }
+
+  .led-strip-bottom {
+    height: 8px;
+    left: 3px;
+    right: 3px;
+    bottom: 3px;
+    padding: 1px 2px;
+    gap: 1px;
+    border-radius: 4px;
+  }
+
+  /* --- Modal --------------------------------------------------------------- */
+  #modal-box {
+    width: 95vw;
+    max-width: 95vw;
+    padding: 20px 16px;
+    border-radius: 12px;
+  }
+
+  #modal-title {
+    font-size: clamp(0.8rem, 2.5vw, 1.1rem);
+    margin-bottom: 12px;
+    letter-spacing: 1px;
+  }
+
+  #modal-box p {
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.95rem;
+    color: #ddd;
+  }
+
+  #modal-label-preview {
+    padding: 10px 12px;
+    margin-bottom: 12px;
+    min-height: 56px;
+  }
+
+  #modal-preview-title,
+  #modal-preview-artist {
+    font-size: 0.9rem;
+    color: #fff;
+  }
+
+  #modal-input-label {
+    font-size: 12px;
+  }
+
+  #modal-input {
+    font-size: 1rem;          /* ≥ 16px verhindert iOS-Auto-Zoom beim Focus */
+    padding: 12px 14px;
+    margin-bottom: 12px;
+  }
+
+  .modal-input-hint {
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.95rem;
+    color: #ddd;
+  }
+
+  #modal-submit,
+  #modal-close {
+    font-size: 12px;
+    padding: 10px 16px;
+    min-height: 48px;
+  }
+
+  /* --- Koordinaten-Box ----------------------------------------------------- */
+  #coords-box {
+    padding: 24px 16px;
+    border-radius: 14px;
+  }
+
+  #coords-title {
+    font-size: clamp(0.8rem, 3.5vw, 1.1rem);
+  }
+
+  #coords-subtitle {
+    font-size: 12px;
+    margin-bottom: 20px;
+  }
+
+  #coords-display {
+    font-size: clamp(0.8rem, 4vw, 1rem);
+    letter-spacing: 1px;
+    padding: 12px;
+    margin-bottom: 20px;
+  }
+
+  #coords-copy,
+  #coords-share,
+  #coords-close {
+    font-size: 12px;
+    padding: 10px 14px;
+    min-height: 48px;
+    margin: 4px 4px 0;
+  }
+
+  /* --- Teilen-Box (#share-box) --------------------------------------------- */
+  #share-title {
+    font-size: clamp(0.8rem, 3.5vw, 1rem);
+  }
+
+  #share-box p {
+    font-size: 12px;
+  }
+
+  #share-coords-label {
+    font-size: 12px;
+  }
+
+  #share-coords-display {
+    font-size: clamp(0.8rem, 3.5vw, 1rem);
+  }
+
+  #share-url-display {
+    font-size: 12px;
+  }
+
+  #share-copy-btn,
+  #share-native-btn,
+  #share-close-btn {
+    font-size: 12px;
+    min-height: 48px;
+    padding: 10px 14px;
+  }
+
+  /* --- Spielanleitung (#info-box) ------------------------------------------ */
+  #info-box h2 {
+    font-size: 0.95rem;
+  }
+
+  .info-lang-btn {
+    font-size: 12px;
+    min-height: 36px;
+    padding: 6px 12px;
+  }
+
+  #info-steps li {
+    font-size: 0.9rem;
+  }
+
+  #info-threshold span {
+    font-size: 0.95rem;
+  }
+
+  #info-threshold strong {
+    font-size: 1.2rem;
+  }
+
+  #info-close-btn {
+    font-size: 12px;
+    min-height: 48px;
+  }
+
+  /* --- Toast --------------------------------------------------------------- */
+  #toast {
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.95rem;
+    top: 10px;
+    padding: 12px 20px;
+    max-width: 90vw;
+    text-align: center;
+    white-space: normal;
+  }
+}
+
+
+/* ==========================================================================
+   OPTIONAL – Helles Farbschema  (prefers-color-scheme: light)
+   Leichte Anpassungen; das Retro-Dunkel-Design bleibt weitgehend erhalten.
+   ========================================================================== */
+@media (prefers-color-scheme: light) {
+
+  :root {
+    /* Etwas hellerer Hintergrund, satt statt stockdunkel */
+    --color-bg:        #2a1200;
+    --color-panel-bg:  #1e0e00;
+  }
+
+  body {
+    background-color: var(--color-bg);
+    /* Etwas mehr Kontrast im Hintergrundmuster */
+    background-image:
+      radial-gradient(ellipse at 20% 50%, #3d1a00 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 50%, #3d1a00 0%, transparent 60%),
+      repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 40px,
+        rgba(0,0,0,0.06) 40px,
+        rgba(0,0,0,0.06) 41px
+      );
+  }
+
+  /* Modal-Overlay weniger dunkel, besser lesbar im hellen Kontext */
+  #modal-overlay {
+    background: rgba(20, 8, 0, 0.65);
+  }
+
+  /* Koordinaten-Overlay etwas transparenter */
+  #coords-overlay {
+    background: rgba(15, 6, 0, 0.78);
+  }
+}

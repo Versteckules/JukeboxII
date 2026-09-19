@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
@@ -48,13 +48,16 @@
 
       <!-- Hinweis Lösungsschwelle -->
       <div id="solve-hint" aria-label="Lösungshinweis">
-        <span data-i18n="solve-hint">21 zum Lösen</span>
+        <span data-i18n="solve-hint">24 zum Lösen</span>
       </div>
 
       <!-- Teilen-Button -->
       <button id="share-btn" data-i18n="share-btn" aria-label="Spiel teilen">
         🔗 Teilen
       </button>
+
+      <!-- Reset-Button -->
+      <button id="reset-btn" onclick="handleReset()">🔄 Zurücksetzen</button>
 
       <!-- Koordinaten-Button (dauerhaft nach Freischaltung) -->
       <button id="show-coords-btn"
@@ -198,7 +201,7 @@
   </div>
 
   <!-- ========================================================
-       KOORDINATEN-OVERLAY – erscheint ab 21 gelösten Songs (initial versteckt)
+       KOORDINATEN-OVERLAY – erscheint ab 24 gelösten Songs (initial versteckt)
   ======================================================== -->
   <div id="coords-overlay" role="dialog" aria-modal="true" aria-labelledby="coords-title" hidden>
     <div id="coords-box">
@@ -261,7 +264,7 @@
       </ol>
       <div id="info-threshold">
         <span data-i18n="info-threshold-label">Zum Lösen benötigt:</span>
-        <strong id="info-threshold-value">21 / 25</strong>
+        <strong id="info-threshold-value">24 / 25</strong>
       </div>
 
       <!-- Joker-Code Eingabebereich -->
